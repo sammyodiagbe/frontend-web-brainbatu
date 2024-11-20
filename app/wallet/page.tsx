@@ -14,8 +14,8 @@ const WalletPage = () => {
         <button
           onClick={async () => {
             const res = await createConnectAccount({
-              email_address: "odiagbesamsonosaro@gmail.com",
-              userId: "12355",
+              email_address: "sammiodiagbe@gmail.com",
+              userId: "user_2p7t1PfWsFTinAZluq13REMhqu8",
             });
 
             console.log(res);
@@ -27,7 +27,7 @@ const WalletPage = () => {
         <button
           onClick={async () => {
             const res = await linkConnectAccount({
-              accountId: "acct_1QNFFJC2lM2qF6cl",
+              accountId: "acct_1QNJNCCLekq1WjJi",
             });
 
             console.log(res);
