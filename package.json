@@ -19,6 +19,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.17.0",
     "convex-helpers": "^0.1.65",
+    "input-otp": "^1.4.1",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
     "react": "^18.3.1",

@@ -3,6 +3,7 @@ import { Form } from "@/components/ui/form";
 import useAuthHook from "@/hooks/useAuthHooks";
 import { Button } from "@/components/ui/button";
 import FormFieldWrapper from "@/components/forms/formWrapper";
+import { SignUp } from "@clerk/nextjs";
 const SignupPage = () => {
   const { form, handleSignup } = useAuthHook();
 
@@ -18,8 +19,8 @@ const SignupPage = () => {
       </div>
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
-          <h1 className="text-2xl font-bold mb-4">Create an account</h1>
-          <Form {...form}>
+          <SignUp routing="hash" />
+          {/* <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSignup)}>
               <FormFieldWrapper
                 form={form}
@@ -57,7 +58,7 @@ const SignupPage = () => {
                 {form.formState.isSubmitting ? "Submitting..." : "Submit"}
               </Button>
             </form>
-          </Form>
+          </Form> */}
         </div>
       </div>
     </div>

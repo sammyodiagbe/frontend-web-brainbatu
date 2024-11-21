@@ -1,42 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import { SignIn } from "@clerk/nextjs";
+import React from "react";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log("Logging in with", email, password);
-  };
-
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
-          Login
-        </button>
-      </form>
+    <div className="grid grid-cols-2 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-bold">Welcome back</h1>
+        <p className="max-w-lg">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, quo
+          maxime, quia blanditiis laborum eius saepe sed modi ipsum quis aut
+          eligendi! Labore soluta doloremque rerum optio fugiat ex magnam?ß
+        </p>
+      </div>
+      <SignIn routing="hash" />
     </div>
   );
 };
