@@ -1,93 +1,58 @@
 "use client";
-import { useSignUp } from "@clerk/nextjs";
-import { useState } from "react";
-
+import { Form } from "@/components/ui/form";
+import useAuthHook from "@/hooks/useAuthHooks";
+import { Button } from "@/components/ui/button";
+import FormFieldWrapper from "@/components/forms/formWrapper";
 const SignupPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [verificationCode, setVerificationCode] = useState("");
-  const [isVerificationSent, setIsVerificationSent] = useState(false);
-  const { signUp } = useSignUp();
-
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const signupResult = await signUp?.create({
-        emailAddress: email,
-        password,
-      });
-
-      console.log(signupResult);
-
-      if (signupResult) {
-        setIsVerificationSent(true);
-        console.log("Verification code sent to email.");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleVerifyAccount = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const verificationResult = await signUp?.attemptEmailAddressVerification({
-        code: verificationCode,
-      });
-
-      if (verificationResult) {
-        console.log("Account verified successfully.");
-      }
-    } catch (error) {
-      console.log("Verification failed:", error);
-    }
-  };
+  const { form, handleSignup } = useAuthHook();
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h2>Signup</h2>
-      <form onSubmit={handleSignup}>
+      <div></div>
+      <div>
+        <h1 className="text-2xl font-bold">Create an account</h1>
         <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSignup)}>
+              <FormFieldWrapper
+                form={form}
+                name="first_name"
+                label="First Name"
+                placeholder="First Name"
+                errorMessage={form.formState.errors.first_name?.message}
+              />
+              <FormFieldWrapper
+                form={form}
+                name="last_name"
+                label="Last Name"
+                placeholder="Last Name"
+                errorMessage={form.formState.errors.last_name?.message}
+              />
+              <FormFieldWrapper
+                form={form}
+                name="email"
+                label="Email Address"
+                placeholder="Email Address"
+                errorMessage={form.formState.errors.email?.message}
+              />
+              <FormFieldWrapper
+                form={form}
+                name="password"
+                label="Password"
+                placeholder="Password"
+                errorMessage={form.formState.errors.password?.message}
+              />
+              <Button
+                type="submit"
+                className="mt-4 w-full"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? "Submitting..." : "Submit"}
+              </Button>
+            </form>
+          </Form>
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
-          Signup
-        </button>
-      </form>
-      {isVerificationSent && (
-        <form onSubmit={handleVerifyAccount} className="mt-4">
-          <div>
-            <label>Verification Code:</label>
-            <input
-              type="text"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-green-500 text-white p-2 rounded-md"
-          >
-            Verify Account
-          </button>
-        </form>
-      )}
+      </div>
     </div>
   );
 };

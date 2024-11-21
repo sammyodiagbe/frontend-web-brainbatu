@@ -23,10 +23,19 @@ export type PublicApiType = {
       >;
     };
     users: {
-      updateUserStripeConnectAccountId: FunctionReference<
+      updateStripeConnectAccount: FunctionReference<
         "mutation",
         "public",
-        { docId: Id<"users">; stripeConnectAccountId: string },
+        {
+          data: {
+            charges_enabled?: boolean;
+            details_submitted?: boolean;
+            payouts_enabled?: boolean;
+            stripe_customer_id?: string;
+          };
+          stripe_customer_id?: string;
+          user_id?: string;
+        },
         any
       >;
     };
