@@ -7,11 +7,18 @@ const SignupPage = () => {
   const { form, handleSignup } = useAuthHook();
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div></div>
-      <div>
-        <h1 className="text-2xl font-bold">Create an account</h1>
-        <div>
+    <div className="grid grid-cols-2 items-center justify-center h-screen">
+      <div className="px-10 space-y-4 flex flex-col items-center justify-center bg-gray-200 w-full h-full">
+        <h1 className="text-4xl font-bold max-w-lg">Welcome to the future</h1>
+        <p className="max-w-lg">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, quo
+          maxime, quia blanditiis laborum eius saepe sed modi ipsum quis aut
+          eligendi! Labore soluta doloremque rerum optio fugiat ex magnam?ß
+        </p>
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="w-[300px]">
+          <h1 className="text-2xl font-bold mb-4">Create an account</h1>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSignup)}>
               <FormFieldWrapper
