@@ -4,17 +4,10 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import UserContextProvider from "@/context/userContextProvider";
 import { ConvexClientProvider } from "@/context/convexProvider";
+import Navbar from "@/components/navbar";
+import QueryClientProviderWrapper from "@/context/queryClientProvider";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,13 +23,16 @@ export default function RootLayout({
     <ClerkProvider>
       <ConvexClientProvider>
         <UserContextProvider>
-          <html lang="en">
-            <body
-              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
+            <html lang="en">
+              <body
+              className={`dark antialiased`}
+              >
+              <QueryClientProviderWrapper>
+              <Navbar />
               {children}
+          </QueryClientProviderWrapper>
             </body>
-          </html>
+            </html>
         </UserContextProvider>
       </ConvexClientProvider>
     </ClerkProvider>

@@ -32,11 +32,9 @@ export default function Home() {
             value={authUser?.email_address}
           />
           <input type="hidden" name="userId" value={authUser?.id} />
-          <Button className="p-2" type="submit">
-            Setup Bank
-          </Button>
+          
         </form>
-        
+
 
         <SignedIn>
           {/* <Button
