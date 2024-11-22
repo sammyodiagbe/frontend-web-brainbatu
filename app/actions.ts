@@ -5,7 +5,9 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
-export const createConnectAccount = async (data: FormData) => {
+export const createConnectAccount = async (
+  data: FormData
+): Promise<{ redirectTo: string }> => {
   console.log("createConnectAccount");
   const email_address = data.get("email_address");
   const userId = data.get("userId");
@@ -15,11 +17,13 @@ export const createConnectAccount = async (data: FormData) => {
       userId,
     });
 
-    console.log(response.data);
-    return response.data;
+    const link = await linkConnectAccount({
+      accountId: response.data.accountId,
+    });
+    return { redirectTo: link as unknown as string };
   } catch (error: any) {
     console.log(error?.message);
-    return;
+    return null;
   }
 };
 
@@ -29,9 +33,9 @@ export const linkConnectAccount = async (data: linkAccountType) => {
     const response = await axios.post(`${url}/stripe/connect/account/link`, {
       accountId,
     });
-    redirect(response.data.url);
-  } catch (error) {
-    console.log(error);
+    redirect(response.data.link.url);
+  } catch (error: any) {
+    console.log(error?.message);
     return;
   }
 };

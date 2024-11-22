@@ -2,10 +2,15 @@
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/userContextProvider";
 import { SignedIn } from "@clerk/nextjs";
-import { createPaymentIntent, createConnectAccount } from "./actions";
+import { createConnectAccount } from "./actions";
 
 export default function Home() {
   const { authUser } = useUserContext();
+
+  const handleSubmit = async (data: FormData) => {
+    const { redirectTo } = await createConnectAccount(data);
+    window.location.href = redirectTo;
+  };
 
   return (
     <div className="grid grid-cols-2 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -20,22 +25,21 @@ export default function Home() {
       <div>
         <p>hi, {authUser?.first_name}</p>
 
-        {!authUser?.stripe_customer_id && (
-          <form action={createConnectAccount} method="POST">
-            <input
-              type="hidden"
-              name="email_address"
-              value={authUser?.email_address}
-            />
-            <input type="hidden" name="userId" value={authUser?.id} />
-            <Button className="p-2" type="submit">
-              Setup Bank
-            </Button>
-          </form>
-        )}
+        <form action={handleSubmit}>
+          <input
+            type="hidden"
+            name="email_address"
+            value={authUser?.email_address}
+          />
+          <input type="hidden" name="userId" value={authUser?.id} />
+          <Button className="p-2" type="submit">
+            Setup Bank
+          </Button>
+        </form>
+        
 
         <SignedIn>
-          <Button
+          {/* <Button
             onClick={() =>
               createPaymentIntent({
                 data: {
@@ -46,7 +50,7 @@ export default function Home() {
             }
           >
             Add funds
-          </Button>
+          </Button> */}
         </SignedIn>
       </div>
     </div>
