@@ -7,10 +7,7 @@ import { createConnectAccount } from "./actions";
 export default function Home() {
   const { authUser } = useUserContext();
 
-  const handleSubmit = async (data: FormData) => {
-    const { redirectTo } = await createConnectAccount(data);
-    window.location.href = redirectTo;
-  };
+  
 
   return (
     <div className="grid grid-cols-2 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -25,18 +22,11 @@ export default function Home() {
       <div>
         <p>hi, {authUser?.first_name}</p>
 
-        <form action={handleSubmit}>
-          <input
-            type="hidden"
-            name="email_address"
-            value={authUser?.email_address}
-          />
-          <input type="hidden" name="userId" value={authUser?.id} />
-          
-        </form>
+        
 
 
         <SignedIn>
+          
           {/* <Button
             onClick={() =>
               createPaymentIntent({
