@@ -6,12 +6,19 @@ import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { IoExitOutline, IoAddCircleSharp } from "react-icons/io5";
 import CreateAccountComponent from "./createAccountComponent";
+import { useMutation } from "@tanstack/react-query";
+import { createPaymentIntent } from "@/app/actions";
 
 
 
 const Navbar = () => {
 
     const { authUser} = useUserContext();
+
+    // const { mutate} = useMutation({
+    //     queryId: ,
+    //     queryFn: () => createPaymentIntent({})
+    // })
   return  (<>
   {<CreateAccountComponent />  }
   <nav className="dark:bg-gray-900 dark:text-white flex justify-between p-4 items-center bg-gray-100">

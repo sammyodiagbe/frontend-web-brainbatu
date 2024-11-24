@@ -44,7 +44,7 @@ export const createPaymentIntent = async ({
   data,
 }: {
   data: { amount: number; stripe_customer_id: string };
-}) => {
+}): Promise<{ clientSecret: string} | null> => {
   const headersList = await headers();
   const url = headersList.get("origin");
   const { amount, stripe_customer_id } = data;
@@ -53,9 +53,9 @@ export const createPaymentIntent = async ({
       amount,
       stripe_customer_id,
     });
-    redirect(`${url}/payment?payment_intent_id=${response.data.id}`);
-  } catch (error) {
-    console.log(error);
-    return;
+    return { clientSecret: response.data.clientSecrent}
+  } catch (error: any) {
+    console.log(error?.message);
+    return null;
   }
 };
