@@ -6,8 +6,8 @@ import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { IoExitOutline, IoAddCircleSharp } from "react-icons/io5";
 import CreateAccountComponent from "./createAccountComponent";
-import { useMutation } from "@tanstack/react-query";
-import { createPaymentIntent } from "@/app/actions";
+import Link from "next/link";
+
 
 
 
@@ -27,7 +27,9 @@ const Navbar = () => {
     <div className="flex items-center gap-4">
         <SignedIn>
             <span className="font-bold">Balance: ${authUser?.balance}</span>
-            <Button variant="outline" className="text-xs py-2 rounded-sm bg-gray-200 hover:bg-gray-300"><IoAddCircleSharp />Add funds</Button>
+            <Link href={"/payment/deposit" }>
+            <Button variant="outline" className="text-xs py-2 rounded-sm bg-gray-200 hover:bg-gray-300">
+            <IoAddCircleSharp />Add funds</Button></Link>
             <SignOutButton>
                 <IoExitOutline className="text-xl cursor-pointer" />
             </SignOutButton>

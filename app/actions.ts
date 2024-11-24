@@ -2,7 +2,6 @@
 import { linkAccountType } from "@/utils/types";
 import { url } from "@/utils/variables";
 import axios from "axios";
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 export const createConnectAccount = async (
@@ -45,17 +44,30 @@ export const createPaymentIntent = async ({
 }: {
   data: { amount: number; stripe_customer_id: string };
 }): Promise<{ clientSecret: string} | null> => {
+  console.log('check')
   const headersList = await headers();
-  const url = headersList.get("origin");
   const { amount, stripe_customer_id } = data;
   try {
-    const response = await axios.post(`${url}/stripe/create-payment-intent`, {
-      amount,
+    const response = await axios.post(`http://localhost:8000/stripe/create-payment-intent`, {
+      amount: Math.round(amount * 100),
       stripe_customer_id,
     });
-    return { clientSecret: response.data.clientSecrent}
+    console.log(response.data)
+    return response.data;
   } catch (error: any) {
+    console.log('There was an error ')
     console.log(error?.message);
     return null;
   }
 };
+
+export const confirmPayment = async (data: FormData) => {
+  console.log(data)
+  try {
+    const confirm = await axios.post("");
+    return null;
+  }catch(error: any) {
+    console.log(error?.message)
+  }
+  return;
+}
