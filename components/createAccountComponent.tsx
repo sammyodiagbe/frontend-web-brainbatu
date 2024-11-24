@@ -17,6 +17,8 @@ const CreateAccountComponent = () => {
         }),
     })
 
+    
+
     const { mutate: linkAccount, error: linkError, isPending: linkIsPending} = useMutation({
         mutationKey: ["linkConnectAccount"],
         mutationFn: () => linkConnectAccount({
