@@ -6,7 +6,7 @@ import { useUserContext } from "@/context/userContextProvider";
 import {  loadStripe } from "@stripe/stripe-js";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { Elements , PaymentElement, useElements} from "@stripe/react-stripe-js";
+import { Elements , useElements} from "@stripe/react-stripe-js";
 import CheckoutPage from "@/components/checkoutPage";
 
 
@@ -16,7 +16,6 @@ const DepositPage = () => {
     const [secretKey, setSecretKey] = useState<string | null>(null);
     const [amount, setAmount] = useState("0");
     const { authUser } = useUserContext();
-    const elements = useElements();
 
     const { data, mutate, isPending, error } = useMutation({
         mutationKey: ["paymentIntent"],
@@ -30,7 +29,8 @@ const DepositPage = () => {
     })
 
     
-    return <main className="h-screen w-screen flex flex-col items-center justify-center">
+       return <Elements stripe={loadstripe}>
+     <main className="h-screen w-screen flex flex-col items-center justify-center">
 
         <div className="space-y-4">
             {authUser?.email_address}
@@ -38,10 +38,9 @@ const DepositPage = () => {
         <Input placeholder="Enter deposit amount" type="string"   value={amount} onChange={({ target}) => setAmount(target.value)}/>
         <Button disabled={isPending} onClick={() => mutate()}>Deposit ${amount}</Button>
         </div>
-        <Elements options={{ clientSecret: secretKey!,}} stripe={loadstripe}>
             <CheckoutPage clientSecret={secretKey} />
-            </Elements>
     </main>
+         </Elements>
 }
 
 export default DepositPage;
