@@ -3,7 +3,7 @@ import { PaymentElement,Elements, useElements, useStripe } from "@stripe/react-s
 import { Button } from "./ui/button";
 import { confirmPayment } from "@/app/actions";
 import { useMutation } from "@tanstack/react-query";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
 type TCheckout = {
@@ -11,12 +11,12 @@ type TCheckout = {
 }
 
 
-const loadstripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 
 const CheckoutPage: FC<TCheckout> = ({ clientSecret}) => {
     const stripe = useStripe();
     const elements = useElements();
+    const [makingPayment, setMakingPayment] = useState(false)
 
 
 
@@ -25,14 +25,26 @@ const CheckoutPage: FC<TCheckout> = ({ clientSecret}) => {
     const { mutate: processPayment, isPending: processingPayment, error: paymentProcessError } = useMutation({
         mutationKey: ["confirmPayment"],
         mutationFn: async (data: FormData) => {
+            setMakingPayment(true)
             try {
 
-                const elem = await elements?.submit();
+                if(!elements || !stripe) return;
+                await elements?.submit();
+
     
-                console.log("elements have been submitted")
-                console.log(elem)
+                // so what i can do here is make a call to the backend and confirm the payment
+                const { error } = await stripe?.confirmPayment({
+                    elements,
+                    clientSecret: clientSecret!,
+                    confirmParams: {
+                        return_url: "http://localhost:3000"
+                    }
+
+                })
+                setMakingPayment(false)
             }catch(error: any) {
                 console.log(error?.message)
+                setMakingPayment(false)
             }
         },
     })
@@ -43,7 +55,7 @@ const CheckoutPage: FC<TCheckout> = ({ clientSecret}) => {
 
     return <form action={processPayment} className="bg-white p-4 rounded-md">
     {clientSecret &&<PaymentElement id="payment-element"  />}
-    <Button type="submit" className="w-full mt-4">Finish Payment</Button>
+    <Button type="submit" disabled={makingPayment} className="w-full mt-4">Finish Payment</Button>
     </form>
         
 }
