@@ -29,8 +29,7 @@ const DepositPage = () => {
     })
 
     
-       return <Elements stripe={loadstripe}>
-     <main className="h-screen w-screen flex flex-col items-center justify-center">
+       return  <main className="h-screen w-screen flex flex-col items-center justify-center">
 
         <div className="space-y-4">
             {authUser?.email_address}
@@ -38,9 +37,12 @@ const DepositPage = () => {
         <Input placeholder="Enter deposit amount" type="string"   value={amount} onChange={({ target}) => setAmount(target.value)}/>
         <Button disabled={isPending} onClick={() => mutate()}>Deposit ${amount}</Button>
         </div>
+        {data?.clientSecret && <Elements options={{ clientSecret: data?.clientSecret!}} stripe={loadstripe}>
+
             <CheckoutPage clientSecret={secretKey} />
+
+        </Elements>}
     </main>
-         </Elements>
 }
 
 export default DepositPage;

@@ -1,5 +1,5 @@
 "use client"
-import { CardElement,Elements, useElements, useStripe } from "@stripe/react-stripe-js"
+import { PaymentElement,Elements, useElements, useStripe } from "@stripe/react-stripe-js"
 import { Button } from "./ui/button";
 import { confirmPayment } from "@/app/actions";
 import { useMutation } from "@tanstack/react-query";
@@ -25,8 +25,15 @@ const CheckoutPage: FC<TCheckout> = ({ clientSecret}) => {
     const { mutate: processPayment, isPending: processingPayment, error: paymentProcessError } = useMutation({
         mutationKey: ["confirmPayment"],
         mutationFn: async (data: FormData) => {
-            const elem = await elements?.submit();
-            console.log(elem)
+            try {
+
+                const elem = await elements?.submit();
+    
+                console.log("elements have been submitted")
+                console.log(elem)
+            }catch(error: any) {
+                console.log(error?.message)
+            }
         },
     })
     
@@ -34,9 +41,9 @@ const CheckoutPage: FC<TCheckout> = ({ clientSecret}) => {
     if(!stripe || !elements) return;
 
 
-    return <form action={processPayment}>
-    {clientSecret &&<CardElement id="payment-element" />}
-    <Button type="submit">Finish Payment</Button>
+    return <form action={processPayment} className="bg-white p-4 rounded-md">
+    {clientSecret &&<PaymentElement id="payment-element"  />}
+    <Button type="submit" className="w-full mt-4">Finish Payment</Button>
     </form>
         
 }
