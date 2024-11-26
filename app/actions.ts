@@ -71,3 +71,23 @@ export const confirmPayment = async (data: FormData) => {
   }
   return;
 }
+
+export const withDrawFunds = async (data: FormData) => {
+
+  console.log(data)
+  let amount = data.get("amount")
+  const accountId = data.get("stripe_customer_id");
+  if(!amount || !accountId) return;
+
+
+  try {
+    const withdraw = await axios.post( `${url}/stripe/connect/account/payout`, {
+      stripe_customer_id: accountId,
+      amount: amount
+    });
+
+    return withdraw.data;
+  }catch(error: any) {
+    console.log(error?.message)
+  }
+}
