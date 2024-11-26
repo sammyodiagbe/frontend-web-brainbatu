@@ -93,3 +93,15 @@ export const withDrawFunds = async (data: FormData) => {
 }
 
 
+export const addCard = async (data: any) =>  {
+  try {
+    const card = await axios.post(`${url}/stripe/connect/add-card`, {
+      ...data
+    });
+    console.log(card)
+  }catch(error: any) {
+    console.log(error?.message)
+  }
+}
+
+

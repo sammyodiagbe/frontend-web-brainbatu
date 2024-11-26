@@ -6,6 +6,7 @@ import { useState } from "react"
 import { withDrawFunds } from "../actions"
 import {  Elements,  } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
+import AddCardComponent from "@/components/addCardComponent"
 
 const loadstripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string)
 
@@ -38,8 +39,8 @@ const WithdrawPage = () => {
         </form>
         <div className="bg-white max-w-[500px] p-4">
             <h1 className="text-gray-700 mb-4">Add payment method</h1>
-            <Elements options={{}} stripe={loadstripe}>
-            
+            <Elements options={{ mode: "setup", currency: "cad"}} stripe={loadstripe}>
+                <AddCardComponent />
             </Elements>
         </div>
     </div>
