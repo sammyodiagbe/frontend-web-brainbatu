@@ -92,6 +92,15 @@ export const withDrawFunds = async (data: FormData) => {
   }
 }
 
+export const getClientSecret = async () : Promise<{ clientSecrent: string} | null> => {
+  try {
+    const clientSecret = await axios.get(`${url}/stripe/get-client-secret`);
+    return clientSecret.data;
+  }catch(error: any) {
+    console.log(error?.message)
+    return null;
+  }
+}
 
 export const addCard = async (data: any) =>  {
   try {

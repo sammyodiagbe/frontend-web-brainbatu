@@ -1,13 +1,16 @@
 "use client"
-import { addCard } from "@/app/actions";
+import { addCard, getClientSecret } from "@/app/actions";
+import { use } from "react";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/userContextProvider";
 import { CardCvcElement,CardExpiryElement, CardNumberElement, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js"
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 
 const AddCardComponent =() => {
     const { authUser } = useUserContext();
+    const [addNewCard, setAddNewCard] = useState(false)
     const stripe = useStripe();
     const elements = useElements();
 
@@ -36,11 +39,25 @@ const AddCardComponent =() => {
         },
         mutationKey: ['createPayementMethod']
     })
-    return <form className="space-y-4" action={createPaymentMethod}>
+
+    const { mutate: generateClientSecret, isPending: generatingClientSecret, data } = useMutation({
+        mutationKey: ["generateClientSecret"],
+        mutationFn: () => getClientSecret(),
+        onSuccess: (data) => {
+            setAddNewCard(false)
+        },
+        onError: () => {
+            setAddNewCard(false)
+        }
+
+    })
+    return (addNewCard ? <form className="space-y-4" action={createPaymentMethod}>
         <input type="hidden" name="stripe_customer_id" value={authUser?.stripe_customer_id} />
     <PaymentElement/>
 <Button disabled={isPending} type="submit" className="bg-blue-500 hover:bg-blue-600 text-white py-5 w-full">Add Payment Method</Button>
-</form>
+</form> : <Button className="p-4" onClick={() => {
+    setAddNewCard(true)
+}}>Add New Card</Button>)
 }
 
 
