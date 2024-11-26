@@ -20,7 +20,7 @@ const DepositPage = () => {
     const { data, mutate, isPending, error } = useMutation({
         mutationKey: ["paymentIntent"],
         mutationFn: () => createPaymentIntent({ data: { amount: parseInt(amount), stripe_customer_id: authUser.stripe_customer_id}}),
-        onSettled(data, error, variables, context) {
+        onSettled(data) {
             setSecretKey(data?.clientSecret!)
         },
         onError: (error) => {
@@ -37,7 +37,7 @@ const DepositPage = () => {
         <Input placeholder="Enter deposit amount" type="string"   value={amount} onChange={({ target}) => setAmount(target.value)}/>
         <Button disabled={isPending} onClick={() => mutate()}>Deposit ${amount}</Button>
         </div>
-        {data?.clientSecret && <Elements options={{ clientSecret: data?.clientSecret!}} stripe={loadstripe}>
+        {data?.clientSecret && <Elements options={{ clientSecret: data?.clientSecret!,}}  stripe={loadstripe}>
 
             <CheckoutPage clientSecret={secretKey} />
 
