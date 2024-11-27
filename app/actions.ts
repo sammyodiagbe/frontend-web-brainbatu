@@ -92,9 +92,9 @@ export const withDrawFunds = async (data: FormData) => {
   }
 }
 
-export const getClientSecret = async () : Promise<{ clientSecrent: string} | null> => {
+export const getClientSecret = async (id: string) : Promise<{ clientSecret: string} | null> => {
   try {
-    const clientSecret = await axios.get(`${url}/stripe/get-client-secret`);
+    const clientSecret = await axios.post(`${url}/stripe/get-client-secret`, { stripe_customer_id: id});
     return clientSecret.data;
   }catch(error: any) {
     console.log(error?.message)
