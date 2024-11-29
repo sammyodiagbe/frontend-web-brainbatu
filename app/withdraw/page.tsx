@@ -61,7 +61,7 @@ const WithdrawPage = () => {
         <div className="bg-white max-w-[500px] p-4">
             <h1 className="text-gray-700 mb-4">Add payment method</h1>
            { data?.clientSecret ? <Elements  options={{ clientSecret: data?.clientSecret, }} stripe={loadstripe}>
-                <AddCardComponent />
+                <AddCardComponent clientSecret={data?.clientSecret}/>
             </Elements> : <Button className="p-4 text-white bg-blue-500 hover:bg-blue-600" onClick={() =>  generateClientSecret()}>Add New Card</Button>}
         </div>
     </div>

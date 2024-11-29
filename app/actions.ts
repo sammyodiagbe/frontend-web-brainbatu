@@ -113,4 +113,19 @@ export const addCard = async (data: any) =>  {
   }
 }
 
+export const attachPaymentMethod = async ({stripe_customer_id, payment_id}: { stripe_customer_id: string, payment_id: string}) => {
+  try {
+      const attachPaymennt = await axios.post(`${url}/stripe/payments/attach`, {
+          stripe_customer_id,
+          payment_id
+      });
+
+      console.log(attachPaymennt)
+
+
+  }catch(error: any) {
+    console.log(error?.message)
+  }
+}
+
 
