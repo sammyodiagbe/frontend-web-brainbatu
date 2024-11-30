@@ -6,6 +6,7 @@ import { useUserContext } from "@/context/userContextProvider";
 import { CardCvcElement,CardExpiryElement, CardNumberElement, useStripe, useElements, PaymentElement, CardElement } from "@stripe/react-stripe-js"
 import { UseMutateFunction, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import axios from "axios";
 
 interface Ttype {
     clientSecret: string,
@@ -28,19 +29,20 @@ const AddCardComponent: FC<Ttype> =({ clientSecret}) => {
                 return;
             }
 
-            const { setupIntent } = await stripe?.confirmSetup({
-                elements,
-                clientSecret: clientSecret!,
-                redirect: "if_required",
-                confirmParams: {
-                    return_url: "http://localhost:3000",
-                    payment_method: "card", 
-                }
-            });
-            if(!setupIntent) return;
+            const CardElement = elements.getElement("card");
 
-            
-            const attach = await attachPaymentMethod({ stripe_customer_id: authUser?.stripe_customer_id as string, payment_id: setupIntent?.payment_method as string})
+            if(!CardElement) return;
+
+            const cardToken = await stripe.createToken(CardElement, {
+                currency: "cad"
+            });
+            if(!cardToken) return;
+
+            const check = await attachPaymentMethod({ stripe_customer_id: authUser?.stripe_customer_id, token_id: cardToken.token?.id as string})
+
+            console.log(check)
+
+            console.log(cardToken)
 
           
         },
@@ -50,7 +52,7 @@ const AddCardComponent: FC<Ttype> =({ clientSecret}) => {
     
    return  <form className="space-y-4" action={createPaymentMethod}>
     {"Checking to see what happens"}
-    <PaymentElement options={{}}/>
+    <CardElement options={{}}/>
 <Button disabled={isPending} type="submit" className="bg-blue-500 hover:bg-blue-600 text-white py-5 w-full">Add Payment Method</Button>
 </form>
 }
