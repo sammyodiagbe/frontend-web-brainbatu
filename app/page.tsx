@@ -39,6 +39,7 @@ export default function Home() {
           >
             Add funds
           </Button> */}
+          <Button>Transfer 10$</Button>
         </SignedIn>
       </div>
     </div>
